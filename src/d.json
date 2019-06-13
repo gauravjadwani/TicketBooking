@@ -1,0 +1,8 @@
+{
+  "moviesList": {
+    "completlyBookedMovies": [],
+    "incompleteMovie" : []
+  },
+  "movies":[{},{}],
+  "halls":[{},{}]
+}
