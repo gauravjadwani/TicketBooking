@@ -1,5 +1,13 @@
 var kue = require("kue");
-var jobs = kue.createQueue();
+var redis = {
+  redis: {
+    port: 6379,
+    host: "52.66.197.111",
+    auth: "foobarq123",
+    db: 2
+  }
+};
+var jobs = kue.createQueue(redis);
 
 function newJob() {
   var job = jobs.create("new_job");
