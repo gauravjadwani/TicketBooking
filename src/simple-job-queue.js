@@ -11,7 +11,7 @@ var jobs = kue.createQueue(redis);
 
 function newJob() {
   var job = jobs.create("new_job");
-  console.log("new job created", job);
+  console.log("new job created");
   job.save();
 }
 
