@@ -1,18 +1,20 @@
 // import Movie from "./Movie";
 
 import Movie from "./Movie";
+import { client } from "./redisCli";
+const { promisify } = require("util");
 export default class MovieBooking {
   constructor() {
     this.completelyBookedMovie = [];
     this.incompleteMovie = [];
   }
-  insertNewMovie(movieName) {
+  insertNewMovie(movieName, hallName = "L1", category = "incompletedMovie") {
     // let M = new Movie(movieName);
     // this.incompleteMovie.push(M);
-    console.log("test 2");
+    // console.log("test 2");
     let obj = new Movie();
     // console.log("before MoovieBooking");
-    let res = obj.insertMovie(movieName);
+    let res = obj.insertMovie(movieName, hallName, category);
     // console.log("after MoovieBooking", res);
     return res;
     // client.set("my test key", "my test value", redis.print);
@@ -30,9 +32,20 @@ export default class MovieBooking {
     // console.log("before MoovieBooking");
     console.log("0");
     let res = await obj.getMoviesList();
-    console.log("6");
-    console.log("res", res);
-    return res;
+    let id = this.persistEnquireDetails(movieName);
+
+    console.log("ppppppppppp", id);
+    if (res.includes(movieName)) {
+      let response = {};
+      response.id = id;
+      return response;
+    } else {
+      return false;
+    }
+
+    // console.log("6");
+    // console.log("res", Array.isArray(res));
+    // return res;
     // let status = false;
     // let movieObject = null;
     // //searching for the movie in Incompletly filled movies
@@ -42,6 +55,24 @@ export default class MovieBooking {
     //     break;
     //   }
     // }
+  }
+  persistEnquireDetails(movieName) {
+    let id = Math.random() * 10000000000;
+    let obj = {
+      id: id,
+      movieName: movieName
+    };
+    client.hmset("Enquire:" + id, obj);
+    return id;
+  }
+  bookSeats(enquireId) {
+    let id = Math.random() * 10000000000;
+    let obj = {
+      id: id,
+      movieName: movieName
+    };
+    client.hmset("Enquire:" + id, obj);
+    return id;
   }
   processPayment() {
     h;

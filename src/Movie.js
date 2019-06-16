@@ -1,14 +1,22 @@
 import { client } from "./redisCli";
 const { promisify } = require("util");
+import moment from "moment";
 
 export default class Movie {
   // constructor(movie) {
   //   this.movie = movie;
   // }
-  async insertMovie(movie, category = "incompletedMovie") {
-    console.log("test 3");
+  async insertMovie(movie, hallName, category) {
     // console.log("async insertMovie init", movie);
     let result;
+    let movieDetails = {};
+    movieDetails.name = movie;
+    movieDetails.hall = hallName;
+    movieDetails.timeInsertedAt = moment().unix();
+    movieDetails.hallSeats = new Array(50).fill(0);
+
+    console.log("test 3", movieDetails);
+    // return null;
     try {
       // console.log(client);
       // console.log("start insertMovie");
@@ -18,7 +26,18 @@ export default class Movie {
           throw err;
         } else {
           console.log("value", value); // "here the yield"
-          return value;
+          // return value;
+        }
+      });
+      result = await client.hmset("Movie:" + movie, movieDetails, function(
+        err,
+        value
+      ) {
+        if (err) {
+          throw err;
+        } else {
+          console.log("value", value); // "here the yield"
+          // return value;
         }
       });
       console.log("test 5", result);
@@ -76,6 +95,7 @@ export default class Movie {
     // console.log(promise1);
     return result;
   }
+  getMovieDetails(movieName) {}
 }
 // let m = new Movie();
 // m.insertMovie("df");
