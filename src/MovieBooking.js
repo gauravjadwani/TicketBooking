@@ -9,7 +9,12 @@ export default class MovieBooking {
   insertNewMovie(movieName) {
     // let M = new Movie(movieName);
     // this.incompleteMovie.push(M);
-    Movie.insertMovie(movieName);
+    console.log("test 2");
+    let obj = new Movie();
+    // console.log("before MoovieBooking");
+    let res = obj.insertMovie(movieName);
+    // console.log("after MoovieBooking", res);
+    return res;
     // client.set("my test key", "my test value", redis.print);
   }
   deleteNewMovie(movieName) {
@@ -19,18 +24,28 @@ export default class MovieBooking {
     this.completelyBookedMovie.push(movieName);
     return newArr;
   }
-  enquireMovie(movieName, Hal) {
-    let status = false;
-    let movieObject = null;
-    //searching for the movie in Incompletly filled movies
-    for (let i = 0; i < this.incompleteMovie.length; i++) {
-      if (this.incompleteMovie[i] === movieName) {
-        movieObject = this.incompleteMovie[i];
-        break;
-      }
-    }
+  async enquireMovie(movieName) {
+    // console.log("test 2");
+    let obj = new Movie();
+    // console.log("before MoovieBooking");
+    console.log("0");
+    let res = await obj.getMoviesList();
+    console.log("6");
+    console.log("res", res);
+    return res;
+    // let status = false;
+    // let movieObject = null;
+    // //searching for the movie in Incompletly filled movies
+    // for (let i = 0; i < this.incompleteMovie.length; i++) {
+    //   if (this.incompleteMovie[i] === movieName) {
+    //     movieObject = this.incompleteMovie[i];
+    //     break;
+    //   }
+    // }
   }
   processPayment() {
     h;
   }
 }
+// let a = new MovieBooking();
+// a.insertNewMovie("hanumdsdsdsan");
