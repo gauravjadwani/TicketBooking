@@ -28,10 +28,10 @@ export default class Hall {
       return false;
     }
   }
-  fillseats(hallSeatsArray, seatsAlloted) {
+  fillseats(hallSeatsArray, seatsAlloted,seatsStatus=1) {
     let arr = hallSeatsArray;
     for (let i = 0; i < seatsAlloted.length; i++) {
-      hallSeatsArray[seatsAlloted[i]] = 1;
+      hallSeatsArray[seatsAlloted[i]] = seatsStatus;
     }
     return arr;
   }
