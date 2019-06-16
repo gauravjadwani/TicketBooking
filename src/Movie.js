@@ -13,7 +13,9 @@ export default class Movie {
     movieDetails.name = movie;
     movieDetails.hall = hallName;
     movieDetails.timeInsertedAt = moment().unix();
-    movieDetails.hallSeats = new Array(50).fill(0);
+    movieDetails.hallSeats = JSON.stringify(new Array(50).fill(0));
+    
+
 
     console.log("test 3", movieDetails);
     // return null;

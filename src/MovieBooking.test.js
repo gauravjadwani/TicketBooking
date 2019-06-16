@@ -9,4 +9,9 @@ async function check() {
   let o = await i.enquireMovie("Avendgers");
   console.log("ooo", o);
 }
-check();
+
+async function testbookSeats() {
+  let o = await i.bookSeats(5, "7608224464");
+  console.log("ooo", o);
+}
+testbookSeats();

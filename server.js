@@ -19,6 +19,13 @@ try {
     let status = await booking.enquireMovie(movie);
     res.send(status);
   });
+  app.get("/bookSeats", async function(req, res) {
+    let noOfSeats = req.query.noofseats;
+    let enquireId = req.query.enquireId;
+    let booking = new MovieBooking();
+    let status = await booking.bookSeats(noOfSeats, enquireId);
+    res.send(status);
+  });
 } catch (e) {
   console.log(e, "eeee");
 }

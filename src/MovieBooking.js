@@ -1,6 +1,8 @@
 // import Movie from "./Movie";
 
 import Movie from "./Movie";
+import Hall from "./Hall";
+
 import { client } from "./redisCli";
 const { promisify } = require("util");
 export default class MovieBooking {
@@ -57,22 +59,55 @@ export default class MovieBooking {
     // }
   }
   persistEnquireDetails(movieName) {
-    let id = Math.random() * 10000000000;
+    let id = parseInt(Math.random() * 10000000000);
     let obj = {
       id: id,
-      movieName: movieName
+      movieName: movieName,
+      paymentStatus: false
     };
     client.hmset("Enquire:" + id, obj);
     return id;
   }
-  bookSeats(enquireId) {
-    let id = Math.random() * 10000000000;
-    let obj = {
-      id: id,
-      movieName: movieName
-    };
-    client.hmset("Enquire:" + id, obj);
-    return id;
+  async bookSeats(noOfSeats, enquireId) {
+    //enquireId will be having MovieName
+    //MovieName-->MovieDetailsHash -->HallSeats
+    const getAsync = promisify(client.hgetall).bind(client);
+    // let result = await client.smembers("incompletedMovie", function(
+    //   err,
+    //   value
+    // ) {
+    //   if (err) {
+    //     throw err;
+    //   } else {
+    //     console.log("3");
+    //     console.log("value", value); // "here the yield"
+    //     return value;
+    //   }
+    // });
+    let enquireHash = await getAsync("Enquire:" + enquireId);
+    let movieName = enquireHash.movieName;
+    let movieHash = await getAsync("Movie:" + movieName);
+    let hallObj = new Hall();
+    let statusAllotedSeats = await hallObj.bookHallSeats(noOfSeats, movieHash);
+    console.log(enquireHash, movieHash);
+    console.log("statusAllotedSeats", statusAllotedSeats);
+    if (statusAllotedSeats) {
+      let res = {};
+      res.id = enquireId;
+      res.movieName = enquireHash.movieName;
+      res.seatsStatus = "queued";
+      res.seats = statusAllotedSeats;
+      res.msg = "Waiting for payment";
+      return res;
+    }
+    return statusAllotedSeats;
+    // let id = Math.random() * 10000000000;
+    // let obj = {
+    //   id: id,
+    //   movieName: movieName
+    // };
+    // client.hmset("Enquire:" + id, obj);
+    // return id;
   }
   processPayment() {
     h;
