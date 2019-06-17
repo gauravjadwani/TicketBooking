@@ -11,14 +11,10 @@ export default class Movie {
     movieDetails.hall = hallName;
     movieDetails.timeInsertedAt = moment().unix();
     movieDetails.hallSeats = JSON.stringify(new Array(50).fill(0));
-
     try {
       result = await client.sadd(category, movie, function(err, value) {
         if (err) {
           throw err;
-        } else {
-          console.log("value", value); // "here the yield"
-          // return value;
         }
       });
       result = await client.hmset("Movie:" + movie, movieDetails, function(
@@ -27,9 +23,6 @@ export default class Movie {
       ) {
         if (err) {
           throw err;
-        } else {
-          console.log("value", value); // "here the yield"
-          // return value;
         }
       });
     } catch (e) {

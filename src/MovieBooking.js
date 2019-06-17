@@ -74,7 +74,6 @@ export default class MovieBooking {
     const getAsync = promisify(client.hgetall).bind(client);
     let enquireHash = await getAsync("Enquire:" + enquireId);
     if (enquireHash.paymentStatus == "false") {
-      // console.log("processPayment", movieName);
       let result = await client.hset(
         "Enquire:" + enquireId,
         "paymentStatus",
@@ -83,8 +82,7 @@ export default class MovieBooking {
           if (err) {
             throw err;
           } else {
-            console.log("value", value); // "here the yield"
-            // return value;
+            console.log("value", value);
           }
         }
       );
