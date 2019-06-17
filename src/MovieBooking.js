@@ -73,11 +73,10 @@ export default class MovieBooking {
   async processPayment(enquireId) {
     const getAsync = promisify(client.hgetall).bind(client);
     let enquireHash = await getAsync("Enquire:" + enquireId);
-    let movieName = enquireHash.movieName;
-    // let movieHash = await getAsync("Movie:" + movieName);
     if (enquireHash.paymentStatus == "false") {
-      result = await client.hset(
-        "Movie:" + movieName,
+      // console.log("processPayment", movieName);
+      let result = await client.hset(
+        "Enquire:" + enquireId,
         "paymentStatus",
         "true",
         function(err, value) {

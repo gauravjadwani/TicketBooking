@@ -1,4 +1,11 @@
-import { USER_SESSION_EXPIRE_TIME } from "./constants";
+import {
+  USER_SESSION_EXPIRE_TIME,
+  PORT,
+  HOST,
+  DB_PASS,
+  REDIS_USER_DATA_INDEX_QUEUE,
+  NO_OF_WORKERS_ATTEMPTS
+} from "./constants";
 import kue from "kue";
 
 export default class Queue {
@@ -6,19 +13,19 @@ export default class Queue {
     this.customQueue = kue.createQueue({
       prefix: "q",
       redis: {
-        port: 6379,
-        host: "52.66.197.111",
-        auth: "foobarq123",
-        db: 2
+        port: PORT,
+        host: HOST,
+        auth: DB_PASS,
+        db: REDIS_USER_DATA_INDEX_QUEUE
       }
     });
   }
   createQueue(data) {
     const verifyStateJob = this.customQueue
       .create("stateUpdater", data)
-      .delay(6000)
+      .delay(USER_SESSION_EXPIRE_TIME)
       .removeOnComplete(true)
-      .attempts(5)
+      .attempts(NO_OF_WORKERS_ATTEMPTS)
       .backoff({ delay: 60 * 1000, type: "exponential" })
       .save();
 
