@@ -3,17 +3,24 @@ import kue from "kue";
 import Hall from "./../Hall";
 import { client } from "./../redisCli";
 const { promisify } = require("util");
+import {
+  PORT,
+  HOST,
+  DB_PASS,
+  REDIS_USER_DATA_INDEX_QUEUE,
+  NO_OF_WORKERS
+} from "./constants";
 
 let customQueue = kue.createQueue({
   prefix: "q",
   redis: {
-    port: 6379,
-    host: "52.66.197.111",
-    auth: "foobarq123",
-    db: 2
+    port: PORT,
+    host: HOST,
+    auth: DB_PASS,
+    db: REDIS_USER_DATA_INDEX_QUEUE
   }
 });
-customQueue.process("stateUpdater", 5, (job, done) => {
+customQueue.process("stateUpdater", NO_OF_WORKERS, (job, done) => {
   tasker(job, done);
 });
 async function tasker(job, done) {

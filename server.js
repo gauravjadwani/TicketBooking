@@ -1,30 +1,59 @@
-var express = require("express");
-// var MovieBooking = require("./src/MovieBooking");
+// var express = require("express");
+import express from "express";
 import MovieBooking from "./src/MovieBooking";
-var app = express();
+let app = express();
 try {
   app.get("/insert", async function(req, res) {
     let movie = req.query.movie;
     let hall = req.query.hall;
-    let booking = new MovieBooking();
-    let status = await booking.insertNewMovie(movie, hall);
-    console.log("status", status);
+    if (movie && hall) {
+      let booking = new MovieBooking();
+      let status = await booking.insertNewMovie(movie, hall);
+      console.log("status", status);
+      let message = {
+        data: "Record Successfully Created"
+      };
+      res.send(JSON.stringify(message));
+    } else {
+      res.status(400);
+      res.send("None shall pass");
+    }
+
     // MovieBooking.insertNewMovie(movie,hall);
-    res.send("fe");
   });
   app.get("/enquire", async function(req, res) {
     let movie = req.query.movie;
-    let hall = req.query.hall;
-    let booking = new MovieBooking();
-    let status = await booking.enquireMovie(movie);
-    res.send(status);
+    if (movie) {
+      let booking = new MovieBooking();
+      let status = await booking.enquireMovie(movie);
+      res.send(status);
+    } else {
+      res.status(400);
+      res.send("None shall pass");
+    }
   });
   app.get("/bookSeats", async function(req, res) {
     let noOfSeats = req.query.noofseats;
-    let enquireId = req.query.enquireId;
-    let booking = new MovieBooking();
-    let status = await booking.bookSeats(noOfSeats, enquireId);
-    res.send(status);
+    let enquireId = req.query.enquireid;
+    if (noOfSeats && enquireId) {
+      let booking = new MovieBooking();
+      let status = await booking.bookSeats(noOfSeats, enquireId);
+      res.send(status);
+    } else {
+      res.status(400);
+      res.send("None shall pass");
+    }
+  });
+  app.get("/processPayment", async function(req, res) {
+    let enquireId = req.query.enquireid;
+    if (enquireId) {
+      let booking = new MovieBooking();
+      let status = await booking.processPayment(enquireId);
+      res.send(status);
+    } else {
+      res.status(400);
+      res.send("None shall pass");
+    }
   });
 } catch (e) {
   console.log(e, "eeee");

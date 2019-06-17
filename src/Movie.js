@@ -33,19 +33,17 @@ export default class Movie {
         }
       });
     } catch (e) {
-      console.log("feefe", e);
+      console.log("insertMovie Error", e);
     }
     return result;
   }
   async getMoviesList(category = "incompletedMovie") {
     let result;
     try {
-      console.log("1");
       let q = await this.getdata();
-      console.log("5", q);
       return q;
     } catch (e) {
-      // console.log("feefe", e);
+      console.log("getMoviesList Error", e);
     }
     return result;
   }
@@ -56,5 +54,3 @@ export default class Movie {
   }
   getMovieDetails(movieName) {}
 }
-// let m = new Movie();
-// m.insertMovie("df");

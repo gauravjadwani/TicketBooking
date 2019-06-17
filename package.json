@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "worker": "nodemon -r babel-register ./src/Utilities/Worker.js",
+    "server": "nodemon -r babel-register server.js",
+    "start": "npm run worker & npm run server"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +22,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-preset-es2015": "^6.24.1"
+    "babel-preset-es2015": "^6.24.1",
+    "npm-run-all": "^4.1.5"
   }
 }

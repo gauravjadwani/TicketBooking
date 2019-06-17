@@ -70,9 +70,26 @@ export default class MovieBooking {
     }
     return statusAllotedSeats;
   }
-  processPayment() {
-    h;
+  async processPayment(enquireId) {
+    const getAsync = promisify(client.hgetall).bind(client);
+    let enquireHash = await getAsync("Enquire:" + enquireId);
+    let movieName = enquireHash.movieName;
+    // let movieHash = await getAsync("Movie:" + movieName);
+    if (enquireHash.paymentStatus == "false") {
+      result = await client.hset(
+        "Movie:" + movieName,
+        "paymentStatus",
+        "true",
+        function(err, value) {
+          if (err) {
+            throw err;
+          } else {
+            console.log("value", value); // "here the yield"
+            // return value;
+          }
+        }
+      );
+      return true;
+    }
   }
 }
-// let a = new MovieBooking();
-// a.insertNewMovie("hanumdsdsdsan");

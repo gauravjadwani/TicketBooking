@@ -1,4 +1,4 @@
-// var kue = require("kue");
+import { USER_SESSION_EXPIRE_TIME } from "./constants";
 import kue from "kue";
 
 export default class Queue {
