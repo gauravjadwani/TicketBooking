@@ -24,7 +24,7 @@ Following end points should be called
 1:localhost:3024/insert?movie=Avengers&hall=12
 2:localhost:3024/enquire?movie=Avengers
 3:localhost:3024/bookSeats?noofseats=30&enquireid=5546908374
-4:localhost:3024/processPayment?enquireid=4029392093
+4:localhost:3024/processPayment?enquireid=5546908374
 ```
 
 ## Contributing
